@@ -7,17 +7,13 @@ defmodule Device.Modbus do
 
   defmodule State do
     @moduledoc false
-    defstruct [
-      :modbus_pid
-    ]
+    defstruct []
   end
 
   @doc """
   Start the Modbus connection.
   """
-  @spec start_link(args :: any) :: GenServer.on_start()
   def start_link(_args) do
-    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
 
   @doc """
@@ -28,53 +24,20 @@ defmodule Device.Modbus do
   - `address` - Starting register address
   - `count` - Number of registers to read, starting from and including `address`
   """
-  @spec read(id :: non_neg_integer, address :: non_neg_integer, count :: pos_integer) ::
-          {:ok, list()} | {:error, String.t()}
   def read(id, address, count) do
-    GenServer.call(__MODULE__, {:read, id, address, count})
   end
 
   @doc """
   Write a value to a coil (`:fc`).
   """
   def write(id, address, value) do
-    GenServer.call(__MODULE__, {:write, id, address, value})
   end
 
   @impl GenServer
   def init(_) do
-    {:ok, modbus_pid} =
-      Modbux.Rtu.Master.start_link(
-        tty: "ttymxc0",
-        timeout: 250,
-        active: false,
-        uart_opts: [speed: 9600]
-      )
-
-    state = %State{
-      modbus_pid: modbus_pid
-    }
-
-    {:ok, state}
   end
 
   @impl GenServer
   def terminate(_reason, state) do
-    if state.modbus_pid,
-      do: Modbux.Rtu.Master.close(state.modbus_pid)
-  end
-
-  @impl GenServer
-  def handle_call({:read, id, address, count}, _from, state) do
-    response = Modbux.Rtu.Master.request(state.modbus_pid, {:rhr, id, address, count})
-
-    {:reply, response, state}
-  end
-
-  @impl GenServer
-  def handle_call({:write, id, address, value}, _from, state) do
-    response = Modbux.Rtu.Master.request(state.modbus_pid, {:fc, id, address, value})
-
-    {:reply, response, state}
   end
 end

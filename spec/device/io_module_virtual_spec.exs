@@ -21,29 +21,9 @@ defmodule Device.IOModule.Virtual.Test do
 
   let :lux, do: 10
 
-  it "turns on the output when lux is low" do
-    PropertyTable.subscribe(Sensors, ["io_module", "dio0"])
-
-    send(IOModule, event())
-
-    assert_receive(%PropertyTable.Event{
-      table: Sensors,
-      property: ["io_module", "dio0"],
-      value: 1
-    })
-  end
+  it "turns on the output when lux is low"
 
   let :lux, do: 5000
 
-  it "turns off the output when lux is high" do
-    PropertyTable.subscribe(Sensors, ["io_module", "dio0"])
-
-    send(IOModule, event())
-
-    assert_receive(%PropertyTable.Event{
-      table: Sensors,
-      property: ["io_module", "dio0"],
-      value: 0
-    })
-  end
+  it "turns off the output when lux is high"
 end
