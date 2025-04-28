@@ -26,7 +26,8 @@ defmodule Device.Application do
     [
       # {Device.Worker, arg}
       {Device.Modbus, nil},
-      {Device.LightSensor, nil}
+      {Device.LightSensor, nil},
+      {Device.IOModule, nil}
     ]
   end
 

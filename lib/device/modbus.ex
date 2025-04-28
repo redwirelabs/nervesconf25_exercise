@@ -34,6 +34,13 @@ defmodule Device.Modbus do
     GenServer.call(__MODULE__, {:read, id, address, count})
   end
 
+  @doc """
+  Write a value to a coil (`:fc`).
+  """
+  def write(id, address, value) do
+    GenServer.call(__MODULE__, {:write, id, address, value})
+  end
+
   @impl GenServer
   def init(_) do
     {:ok, modbus_pid} =
@@ -60,6 +67,13 @@ defmodule Device.Modbus do
   @impl GenServer
   def handle_call({:read, id, address, count}, _from, state) do
     response = Modbux.Rtu.Master.request(state.modbus_pid, {:rhr, id, address, count})
+
+    {:reply, response, state}
+  end
+
+  @impl GenServer
+  def handle_call({:write, id, address, value}, _from, state) do
+    response = Modbux.Rtu.Master.request(state.modbus_pid, {:fc, id, address, value})
 
     {:reply, response, state}
   end
