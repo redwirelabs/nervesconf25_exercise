@@ -10,6 +10,7 @@ defmodule Device.Application do
     children =
       [
         # {Device.Worker, arg}
+        {PropertyTable, name: Sensors}
       ] ++ children(target(), env())
 
     Supervisor.start_link(children, opts)
@@ -24,6 +25,8 @@ defmodule Device.Application do
   defp children(_target, _env) do
     [
       # {Device.Worker, arg}
+      {Device.Modbus, nil},
+      {Device.LightSensor, nil}
     ]
   end
 

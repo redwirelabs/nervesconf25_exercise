@@ -48,6 +48,7 @@ defmodule Device.MixProject do
       # Dependencies for all targets
       {:dialyxir, "~> 1.4", only: :dev, runtime: false},
       {:espec, github: "antonmi/espec", ref: "36bf824", only: :test},
+      {:modbux, "~> 0.3.14"},
       {:nerves, "~> 1.11", runtime: false},
       {:resolve, "~> 1.0"},
       {:shoehorn, "~> 0.9.2"},

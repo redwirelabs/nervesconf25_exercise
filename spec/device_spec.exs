@@ -1,3 +1,3 @@
 defmodule Device.Test do
-  use ESpec
+  use ESpec, async: false
 end

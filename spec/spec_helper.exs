@@ -3,7 +3,12 @@ ESpec.configure(fn config ->
     {:shared, tags: tags}
   end)
 
-  config.finally(fn _shared ->
+  config.finally(fn shared ->
+    PropertyTable.delete_matches(Sensors, [:_])
+
+    if Process.alive?(shared[:pid]),
+      do: GenServer.stop(shared[:pid])
+
     :ok
   end)
 end)
