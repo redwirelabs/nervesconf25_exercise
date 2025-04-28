@@ -16,6 +16,15 @@ config :vintage_net,
      %{
        type: VintageNetEthernet,
        ipv4: %{method: :dhcp}
+     }},
+    {"eth1",
+     %{
+       type: VintageNetEthernet,
+       ipv4: %{
+         method: :static,
+         address: "192.168.0.3",
+         netmask: "255.255.255.0"
+       }
      }}
     # {"wlan0", %{type: VintageNetWiFi}}
   ]
