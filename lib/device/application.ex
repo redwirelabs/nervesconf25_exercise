@@ -16,9 +16,15 @@ defmodule Device.Application do
     Supervisor.start_link(children, opts)
   end
 
+  defp children(:host, :test) do
+    []
+  end
+
   defp children(:host, _env) do
     [
       # {Device.Worker, arg}
+      {Device.LightSensor.Virtual, nil},
+      {Device.IOModule.Virtual, nil}
     ]
   end
 
